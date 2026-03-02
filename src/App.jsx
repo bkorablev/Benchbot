@@ -1,8 +1,9 @@
 import { useState, useRef } from 'react';
-import { TriangleAlert, Dna, TestTube2 } from 'lucide-react';
+import { TriangleAlert, Dna, TestTube2, Beaker } from 'lucide-react';
 import ExperimentForm from './components/ExperimentForm';
 import ProtocolPage from './components/ProtocolPage';
 import PCRModule from './components/pcr/PCRModule';
+import BufferModule from './components/buffer/BufferModule';
 import { GUIDE_COLORS } from './data/constants';
 
 const INITIAL_CRISPR_STATE = {
@@ -44,8 +45,9 @@ export default function App() {
 
   // ── Module tabs ──────────────────────────────────────────────────────────
   const modules = [
-    { id: 'crispr', label: 'CRISPR Editor', icon: Dna },
-    { id: 'pcr',    label: 'PCR',           icon: TestTube2 },
+    { id: 'crispr',  label: 'CRISPR Editor', icon: Dna       },
+    { id: 'pcr',     label: 'PCR',           icon: TestTube2 },
+    { id: 'buffer',  label: 'Buffer Calc',   icon: Beaker    },
   ];
 
   return (
@@ -125,6 +127,13 @@ export default function App() {
       <div className={activeModule === 'pcr' ? '' : 'hidden'}>
         <div className="px-4 py-8">
           <PCRModule />
+        </div>
+      </div>
+
+      {/* Buffer module (kept mounted to preserve state) */}
+      <div className={activeModule === 'buffer' ? '' : 'hidden'}>
+        <div className="px-4 py-8">
+          <BufferModule />
         </div>
       </div>
     </div>
