@@ -1,9 +1,10 @@
 import { useState, useRef } from 'react';
-import { TriangleAlert, Dna, TestTube2, Beaker } from 'lucide-react';
+import { TriangleAlert, Dna, TestTube2, Beaker, FlaskConical } from 'lucide-react';
 import ExperimentForm from './components/ExperimentForm';
 import ProtocolPage from './components/ProtocolPage';
 import PCRModule from './components/pcr/PCRModule';
 import BufferModule from './components/buffer/BufferModule';
+import MolarityModule from './components/molarity/MolarityModule';
 import { GUIDE_COLORS } from './data/constants';
 
 const INITIAL_CRISPR_STATE = {
@@ -40,6 +41,12 @@ const TOOLS = [
     title: 'Buffer Calculator',
     description: 'Calculate component volumes for any buffer using C₁V₁ = C₂V₂ with unit conversion',
   },
+  {
+    id: 'molarity',
+    icon: FlaskConical,
+    title: 'Molarity Calculator',
+    description: 'Calculate mass, volume, molarity, and dilutions for any compound using four independent calculators',
+  },
 ];
 
 function LandingPage({ onEnter }) {
@@ -59,7 +66,7 @@ function LandingPage({ onEnter }) {
       <p className="text-slate-500 text-lg mb-12">Your molecular biology bench assistant</p>
 
       {/* Tool cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 max-w-3xl w-full">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 max-w-5xl w-full">
         {TOOLS.map(({ id, icon: Icon, title, description }) => (
           <button
             key={id}
@@ -113,9 +120,10 @@ export default function App() {
   const crisprStatusColor = !generatedExperiment ? 'bg-slate-300' : isDirty ? 'bg-amber-400' : 'bg-teal-500';
 
   const modules = [
-    { id: 'crispr', label: 'CRISPR Editor', icon: Dna       },
-    { id: 'pcr',    label: 'PCR',           icon: TestTube2 },
-    { id: 'buffer', label: 'Buffer Calc',   icon: Beaker    },
+    { id: 'crispr',   label: 'CRISPR Editor', icon: Dna          },
+    { id: 'pcr',      label: 'PCR',           icon: TestTube2    },
+    { id: 'buffer',   label: 'Buffer Calc',   icon: Beaker       },
+    { id: 'molarity', label: 'Molarity',       icon: FlaskConical },
   ];
 
   return (
@@ -214,6 +222,13 @@ export default function App() {
         <div className={activeModule === 'buffer' ? '' : 'hidden'}>
           <div className="px-4 py-8">
             <BufferModule />
+          </div>
+        </div>
+
+        {/* Molarity module (kept mounted to preserve state) */}
+        <div className={activeModule === 'molarity' ? '' : 'hidden'}>
+          <div className="px-4 py-8">
+            <MolarityModule />
           </div>
         </div>
 
